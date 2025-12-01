@@ -31,7 +31,30 @@ void part1(char **lines, int count) {
 
 }
 
-void part2() {}
+void part2(char **lines, int count) {
+    int pos = START_POSITION;
+    int passwd = 0;
+    for (int i = 0; i < count; i++) {
+        char dir;
+        int digit;
+        parse(lines[i], &dir, &digit);
+
+        int old_pos = pos;
+
+        if (dir == 'R') {
+            int counts = abs(pos+digit) / 99;
+            pos = (pos + digit) % 100;
+            if (old_pos + digit >= 100) {passwd += counts;}
+        } else {
+            int counts = abs(pos+digit) / 99;
+            pos = ((pos - digit) % 100 + 100) % 100;
+            if (old_pos - digit < 0) {passwd += counts;}
+        }
+        // if (pos == 0) {passwd++;}
+    }
+
+    printf("password is: %d\n", passwd);
+}
 
 int main(void) {
 
@@ -75,7 +98,7 @@ int main(void) {
     part1(lines, count);
 
     // part2
-    part2();
+    part2(lines, count);
 
     free(lines);
     return 0;
